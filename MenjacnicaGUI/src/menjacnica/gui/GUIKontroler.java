@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -27,6 +28,7 @@ public class GUIKontroler {
 					menjacnica = new MenjacnicaGUI();
 					menjacnica.setVisible(true);
 					menjacnica.setLocationRelativeTo(null);
+					//menjacnica.setIconImage(ImageIO.read(new File("resources/minion.jpg")));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

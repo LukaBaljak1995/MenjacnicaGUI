@@ -11,7 +11,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -67,9 +70,9 @@ public class MenjacnicaGUI extends JFrame {
 	//private ImageIcon image;
 
 	/**
-	 * Create the frame.
+	 * Create the frame. 
 	 */
-	public MenjacnicaGUI() {
+	public MenjacnicaGUI() throws IOException {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -77,8 +80,8 @@ public class MenjacnicaGUI extends JFrame {
 
 			}
 		});
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MenjacnicaGUI.class.getResource("/icons/Winter.jpg")));
 		
+		setIconImage(ImageIO.read(new File("resources/mi.png")));
 		setTitle("Menjacnica");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 635, 364);
@@ -151,7 +154,7 @@ public class MenjacnicaGUI extends JFrame {
 					GUIKontroler.ugasiAplikaciju();
 				}
 			});
-			mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.CTRL_MASK));
+			mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK));
 		}
 		return mntmExit;
 	}
