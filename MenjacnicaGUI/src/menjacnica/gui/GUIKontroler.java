@@ -16,6 +16,7 @@ public class GUIKontroler {
 
 	private static MenjacnicaGUI menjacnica;
 	private static Kursevi kurs;
+	private static String zaEditor;
 
 	/**
 	 * Launch the application.
@@ -28,7 +29,8 @@ public class GUIKontroler {
 					menjacnica = new MenjacnicaGUI();
 					menjacnica.setVisible(true);
 					menjacnica.setLocationRelativeTo(null);
-					//menjacnica.setIconImage(ImageIO.read(new File("resources/minion.jpg")));
+					// menjacnica.setIconImage(ImageIO.read(new
+					// File("resources/minion.jpg")));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -96,10 +98,23 @@ public class GUIKontroler {
 			kurs.dodajValutu(v);
 
 			menjacnica.osveziTabelu();
+			zaEditor += v.toString();
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(menjacnica.getContentPane(), "Proveri formu: " + e1.getMessage(), "Greska",
 					JOptionPane.ERROR_MESSAGE);
 		}
+	}
+
+	public static void prikaziDodajKurs() {
+		DodajKursGUI prozor = new DodajKursGUI();
+		prozor.setVisible(true);
+		prozor.setLocationRelativeTo(null);
+	}
+
+	public static void prikaziIzvrsiIzmenu() {
+		IzvrsiIzmenuGUI prozor = new IzvrsiIzmenuGUI();
+		prozor.setVisible(true);
+		prozor.setLocationRelativeTo(null);
 	}
 
 	public static List<Valute> vratiSveValute() {
@@ -109,6 +124,19 @@ public class GUIKontroler {
 	public static void izbrisiValutu(Valute v) {
 		kurs.obrisiValutu(v);
 		menjacnica.osveziTabelu();
+		zaEditor += v.toString();
+	}
+
+	public static String vratiPoslednju() {
+		return kurs.vratiPoslednjegString();
+	}
+
+	public static String getZaEditor() {
+		return zaEditor;
+	}
+
+	public static void setZaEditor(String zaEditor) {
+		GUIKontroler.zaEditor = zaEditor;
 	}
 
 }

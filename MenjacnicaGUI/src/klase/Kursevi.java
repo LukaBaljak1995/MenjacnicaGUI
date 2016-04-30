@@ -18,11 +18,20 @@ public class Kursevi {
 	}
 
 	public void obrisiValutu(Valute valuta) {
-		valute.remove(valuta);
+		if (valute.contains(valuta))
+			valute.remove(valuta);
 	}
 
 	public LinkedList<Valute> vratiSveValute() {
 		return valute;
+	}
+
+	public String vratiPoslednjegString() {
+		if (!valute.isEmpty()) {
+			return valute.getLast().toString();
+		} else {
+			return "";
+		}
 	}
 
 	public void sacuvajUFajl(String putanja) {

@@ -40,8 +40,6 @@ import javax.swing.JLabel;
 import javax.swing.JEditorPane;
 import javax.swing.border.TitledBorder;
 
-
-
 public class MenjacnicaGUI extends JFrame {
 
 	/**
@@ -67,10 +65,10 @@ public class MenjacnicaGUI extends JFrame {
 	private JMenuItem mntmDodajKurs;
 	private JMenuItem mntmIzbrisiKurs;
 	private JMenuItem mntmIzvrsiIzmenu;
-	//private ImageIcon image;
+	// private ImageIcon image;
 
 	/**
-	 * Create the frame. 
+	 * Create the frame.
 	 */
 	public MenjacnicaGUI() throws IOException {
 		addWindowListener(new WindowAdapter() {
@@ -80,7 +78,7 @@ public class MenjacnicaGUI extends JFrame {
 
 			}
 		});
-		
+
 		setIconImage(ImageIO.read(new File("resources/mi.png")));
 		setTitle("Menjacnica");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -214,7 +212,8 @@ public class MenjacnicaGUI extends JFrame {
 			btnDodajKurs = new JButton("Dodaj kurs");
 			btnDodajKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-
+					GUIKontroler.prikaziDodajKurs();
+					editorPane.setText(GUIKontroler.getZaEditor());
 				}
 			});
 			btnDodajKurs.setPreferredSize(new Dimension(120, 25));
@@ -225,6 +224,12 @@ public class MenjacnicaGUI extends JFrame {
 	private JButton getBtnIzvrsiIzmenu() {
 		if (btnIzvrsiZamenu == null) {
 			btnIzvrsiZamenu = new JButton("Izvrsi izmenu");
+			btnIzvrsiZamenu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					GUIKontroler.prikaziIzvrsiIzmenu();
+					editorPane.setText(GUIKontroler.getZaEditor());
+				}
+			});
 
 			btnIzvrsiZamenu.setPreferredSize(new Dimension(120, 25));
 		}
@@ -234,7 +239,11 @@ public class MenjacnicaGUI extends JFrame {
 	public void osveziTabelu() {
 		ValuteTableModel model = (ValuteTableModel) table.getModel();
 		model.ucitajvalute(GUIKontroler.vratiSveValute());
+	}
 
+	public void dodajTekstUEditor() {
+		editorPane.setText(GUIKontroler.getZaEditor());
+		getContentPane();
 	}
 
 	private JPopupMenu getPopupMenu() {
@@ -280,6 +289,23 @@ public class MenjacnicaGUI extends JFrame {
 			btnIzbrisiKurs = new JButton("Izbrisi kurs");
 			btnIzbrisiKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					if (getTable().getSelectedRow() != -1) {
+						int red = getTable().getSelectedRow();
+						getTable().remove(red);
+						Valute v = new Valute();
+						v.setSifra((Integer) getTable().getValueAt(red, 0));
+						v.setSkraceniNaziv((String) getTable().getValueAt(red, 1));
+						v.setKupovni((Double) getTable().getValueAt(red, 2));
+						v.setProdajni((Double) getTable().getValueAt(red, 3));
+						v.setSrednji((Double) getTable().getValueAt(red, 4));
+						v.setNaziv((String) getTable().getValueAt(red, 5));
+						GUIKontroler.izbrisiValutu(v);
+						;
+
+					} else {
+						JOptionPane.showMessageDialog(getContentPane(),
+								"Niste odabrali red u tabeli koji zelite da obrisete!");
+					}
 				}
 			});
 		}

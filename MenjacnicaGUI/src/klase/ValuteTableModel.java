@@ -45,7 +45,7 @@ public class ValuteTableModel extends AbstractTableModel {
 		case 4:
 			return v.getProdajni();
 		case 5:
-			v.getNaziv();
+			return v.getNaziv();
 		default:
 			return "NN";
 		}
@@ -63,6 +63,10 @@ public class ValuteTableModel extends AbstractTableModel {
 
 	public Valute getValuteByIndex(int index) {
 		return valute.get(index);
+	}
+
+	public void izbrisiRed(int indeks) {
+		valute.remove(indeks);
 	}
 
 }
