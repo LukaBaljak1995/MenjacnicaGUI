@@ -61,7 +61,7 @@ public class MenjacnicaGUI extends JFrame {
 	private JButton btnIzvrsiZamenu;
 	private JPopupMenu popupMenu;
 	private JButton btnIzbrisiKurs;
-	private JEditorPane editorPane;
+	private static JEditorPane editorPane;
 	private JMenuItem mntmDodajKurs;
 	private JMenuItem mntmIzbrisiKurs;
 	private JMenuItem mntmIzvrsiIzmenu;
@@ -213,7 +213,7 @@ public class MenjacnicaGUI extends JFrame {
 			btnDodajKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					GUIKontroler.prikaziDodajKurs();
-					editorPane.setText(GUIKontroler.getZaEditor());
+					osveziTabelu();
 				}
 			});
 			btnDodajKurs.setPreferredSize(new Dimension(120, 25));
@@ -291,7 +291,6 @@ public class MenjacnicaGUI extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (getTable().getSelectedRow() != -1) {
 						int red = getTable().getSelectedRow();
-						getTable().remove(red);
 						Valute v = new Valute();
 						v.setSifra((Integer) getTable().getValueAt(red, 0));
 						v.setSkraceniNaziv((String) getTable().getValueAt(red, 1));
@@ -300,6 +299,8 @@ public class MenjacnicaGUI extends JFrame {
 						v.setSrednji((Double) getTable().getValueAt(red, 4));
 						v.setNaziv((String) getTable().getValueAt(red, 5));
 						GUIKontroler.izbrisiValutu(v);
+						osveziTabelu();
+						dodajTekst("DEL:" + v.toString());
 						;
 
 					} else {
@@ -315,7 +316,7 @@ public class MenjacnicaGUI extends JFrame {
 	private JEditorPane getEditorPane() {
 		if (editorPane == null) {
 			editorPane = new JEditorPane();
-			editorPane.setPreferredSize(new Dimension(100, 50));
+			editorPane.setPreferredSize(new Dimension(130, 50));
 			editorPane.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		}
 		return editorPane;
@@ -341,4 +342,12 @@ public class MenjacnicaGUI extends JFrame {
 		}
 		return mntmIzvrsiIzmenu;
 	}
+
+	public static void dodajTekst(String tekst) {
+		if (editorPane.getText() != null)
+			editorPane.setText(editorPane.getText() + tekst);
+		else
+			editorPane.setText(tekst);
+	}
+
 }

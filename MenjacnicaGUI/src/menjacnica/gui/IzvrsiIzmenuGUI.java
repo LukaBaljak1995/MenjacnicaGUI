@@ -39,6 +39,7 @@ public class IzvrsiIzmenuGUI extends JFrame {
 	private JComboBox comboBox;
 	private JLabel lblIznos;
 	private JCheckBox kupovinaCheckBox;
+	private JCheckBox prodajaCheckBox;
 	private JTextField prodajniTextField;
 	private JTextField iznosTextField;
 
@@ -62,14 +63,12 @@ public class IzvrsiIzmenuGUI extends JFrame {
 		contentPane.add(getComboBox());
 		contentPane.add(getLblIznos());
 		contentPane.add(getKupovinaCheckBox());
+		contentPane.add(getProdajaCheckBox());
 
 		JLabel lblTransakcija = new JLabel("Transakcija:");
 		lblTransakcija.setBounds(298, 126, 106, 16);
 		contentPane.add(lblTransakcija);
 
-		JCheckBox prodajaCheckBox = new JCheckBox("Prodaja");
-		prodajaCheckBox.setBounds(298, 169, 128, 23);
-		contentPane.add(prodajaCheckBox);
 		contentPane.add(getProdajniTextField());
 		contentPane.add(getIznosTextField());
 
@@ -95,14 +94,15 @@ public class IzvrsiIzmenuGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (getKupovinaCheckBox().isSelected()) {
 					String tekst = "Transakcija kupovine -> Valuta: " + (String) comboBox.getSelectedItem()
-							+ ", iznos: " + iznosTextField.getText();
-					GUIKontroler.setZaEditor(GUIKontroler.getZaEditor() + tekst);
+							+ ", iznos: " + iznosTextField.getText() + "\n";
+					MenjacnicaGUI.dodajTekst(tekst);
 				}
 				if (prodajaCheckBox.isSelected()) {
 					String tekst = "Transakcija prodaje -> Valuta: " + (String) comboBox.getSelectedItem() + ", iznos: "
-							+ iznosTextField.getText();
-					GUIKontroler.setZaEditor(GUIKontroler.getZaEditor() + tekst);
+							+ iznosTextField.getText() + "\n";
+					MenjacnicaGUI.dodajTekst(tekst);
 				}
+				dispose();
 			}
 		});
 		btnIzvrsiZamenu.setBounds(6, 275, 175, 39);
@@ -175,10 +175,32 @@ public class IzvrsiIzmenuGUI extends JFrame {
 	private JCheckBox getKupovinaCheckBox() {
 		if (kupovinaCheckBox == null) {
 			kupovinaCheckBox = new JCheckBox("Kupovina");
+			kupovinaCheckBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(kupovinaCheckBox.isSelected()){
+						prodajaCheckBox.setSelected(false);
+					}
+				}
+			});
 			kupovinaCheckBox.setBounds(298, 145, 146, 24);
 			kupovinaCheckBox.setPreferredSize(new Dimension(90, 13));
 		}
 		return kupovinaCheckBox;
+	}
+	private JCheckBox getProdajaCheckBox() {
+		if (prodajaCheckBox == null) {
+			prodajaCheckBox = new JCheckBox("Kupovina");
+			prodajaCheckBox.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(prodajaCheckBox.isSelected()){
+						kupovinaCheckBox.setSelected(false);
+					}
+				}
+			});
+			prodajaCheckBox.setBounds(298, 169, 128, 23);
+			prodajaCheckBox.setPreferredSize(new Dimension(90, 13));
+		}
+		return prodajaCheckBox;
 	}
 
 	private JTextField getProdajniTextField() {

@@ -165,6 +165,7 @@ public class DodajKursGUI extends JFrame {
 							Double.parseDouble(textFieldKupovniKurs.getText()),
 							Double.parseDouble(textFieldKupovniKurs.getText()),
 							Double.parseDouble(textFieldSrednjiKurs.getText()), textFieldNaziv.getText());
+					MenjacnicaGUI.dodajTekst(GUIKontroler.vratiPoslednju());
 					dispose();
 				}
 

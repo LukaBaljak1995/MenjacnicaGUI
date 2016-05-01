@@ -29,6 +29,7 @@ public class GUIKontroler {
 					menjacnica = new MenjacnicaGUI();
 					menjacnica.setVisible(true);
 					menjacnica.setLocationRelativeTo(null);
+					zaEditor = "";
 					// menjacnica.setIconImage(ImageIO.read(new
 					// File("resources/minion.jpg")));
 				} catch (Exception e) {
@@ -98,7 +99,7 @@ public class GUIKontroler {
 			kurs.dodajValutu(v);
 
 			menjacnica.osveziTabelu();
-			zaEditor += v.toString();
+			// setZaEditor(getZaEditor()+v.toString());
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(menjacnica.getContentPane(), "Proveri formu: " + e1.getMessage(), "Greska",
 					JOptionPane.ERROR_MESSAGE);
@@ -124,7 +125,7 @@ public class GUIKontroler {
 	public static void izbrisiValutu(Valute v) {
 		kurs.obrisiValutu(v);
 		menjacnica.osveziTabelu();
-		zaEditor += v.toString();
+		// zaEditor += v.toString();
 	}
 
 	public static String vratiPoslednju() {
