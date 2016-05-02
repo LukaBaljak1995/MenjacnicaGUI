@@ -27,9 +27,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
 @SuppressWarnings("serial")
-public class IzvrsiIzmenuGUI extends JFrame {
+public class IzvrsiZamenuGUI extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lblProdajniKurs;
@@ -46,7 +47,7 @@ public class IzvrsiIzmenuGUI extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public IzvrsiIzmenuGUI() {
+	public IzvrsiZamenuGUI() {
 		setPreferredSize(new Dimension(300, 500));
 		setResizable(false);
 		setTitle("Izvrsite izmenu");
@@ -73,6 +74,13 @@ public class IzvrsiIzmenuGUI extends JFrame {
 		contentPane.add(getIznosTextField());
 
 		JSlider slider = new JSlider();
+		
+		slider.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				iznosTextField.setText("" + slider.getValue());
+			}
+		});
 		slider.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -87,6 +95,7 @@ public class IzvrsiIzmenuGUI extends JFrame {
 		slider.setVisible(true);
 		slider.setMinorTickSpacing(5);
 		slider.setBounds(6, 209, 438, 39);
+		iznosTextField.setText("" + slider.getValue());
 		contentPane.add(slider);
 
 		JButton btnIzvrsiZamenu = new JButton("Izvrsi zamenu");
@@ -189,7 +198,7 @@ public class IzvrsiIzmenuGUI extends JFrame {
 	}
 	private JCheckBox getProdajaCheckBox() {
 		if (prodajaCheckBox == null) {
-			prodajaCheckBox = new JCheckBox("Kupovina");
+			prodajaCheckBox = new JCheckBox("Prodaja");
 			prodajaCheckBox.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(prodajaCheckBox.isSelected()){

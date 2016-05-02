@@ -39,6 +39,8 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JEditorPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 
 public class MenjacnicaGUI extends JFrame {
 
@@ -61,16 +63,17 @@ public class MenjacnicaGUI extends JFrame {
 	private JButton btnIzvrsiZamenu;
 	private JPopupMenu popupMenu;
 	private JButton btnIzbrisiKurs;
-	private static JEditorPane editorPane;
 	private JMenuItem mntmDodajKurs;
 	private JMenuItem mntmIzbrisiKurs;
 	private JMenuItem mntmIzvrsiIzmenu;
+	private static JEditorPane editorPane;
 	// private ImageIcon image;
 
 	/**
 	 * Create the frame.
 	 */
 	public MenjacnicaGUI() throws IOException {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MenjacnicaGUI.class.getResource("/icons/minionMe.jpg")));
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -79,18 +82,18 @@ public class MenjacnicaGUI extends JFrame {
 			}
 		});
 
-		setIconImage(ImageIO.read(new File("resources/mi.png")));
+		//setIconImage(ImageIO.read(new File("resources/mi.png")));
 		setTitle("Menjacnica");
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 635, 364);
+		setBounds(100, 100, 735, 364);
 		setJMenuBar(getMenuBar_1());
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		contentPane.add(getScrollPane(), BorderLayout.CENTER);
-		contentPane.add(getPanel(), BorderLayout.EAST);
 		contentPane.add(getEditorPane(), BorderLayout.SOUTH);
+		contentPane.add(getPanel(), BorderLayout.EAST);
 	}
 
 	private JMenuBar getMenuBar_1() {
@@ -118,12 +121,10 @@ public class MenjacnicaGUI extends JFrame {
 			mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 			mntmOpen.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String postojeci = editorPane.getText();
-					editorPane.setText(postojeci + "Fajl: " + GUIKontroler.ucitajIzFajla() + "/n");
+					dodajTekst(GUIKontroler.ucitajIzFajla());
 				}
 			});
-			mntmOpen.setIcon(new ImageIcon(
-					MenjacnicaGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/directory.gif")));
+			mntmOpen.setIcon(new ImageIcon(MenjacnicaGUI.class.getResource("/icons/Stuart.jpg")));
 		}
 		return mntmOpen;
 	}
@@ -133,13 +134,14 @@ public class MenjacnicaGUI extends JFrame {
 			mntmSave = new JMenuItem("Save");
 			mntmSave.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					String postojeci = editorPane.getText();
-					editorPane.setText(postojeci + "Sacuvan fajl: " + GUIKontroler.sacuvajUFajl() + "\n");
+					
+						dodajTekst(GUIKontroler.sacuvajUFajl());
+					
 				}
 			});
 			mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
 			mntmSave.setIcon(
-					new ImageIcon(MenjacnicaGUI.class.getResource("/javax/swing/plaf/metal/icons/ocean/floppy.gif")));
+					new ImageIcon(MenjacnicaGUI.class.getResource("/icons/mimimi.jpg")));
 		}
 		return mntmSave;
 	}
@@ -152,7 +154,7 @@ public class MenjacnicaGUI extends JFrame {
 					GUIKontroler.ugasiAplikaciju();
 				}
 			});
-			mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK));
+			mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.ALT_MASK));
 		}
 		return mntmExit;
 	}
@@ -181,6 +183,7 @@ public class MenjacnicaGUI extends JFrame {
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();
+			scrollPane.setEnabled(false);
 			addPopup(scrollPane, getPopupMenu());
 			scrollPane.setViewportView(getTable());
 		}
@@ -223,11 +226,10 @@ public class MenjacnicaGUI extends JFrame {
 
 	private JButton getBtnIzvrsiIzmenu() {
 		if (btnIzvrsiZamenu == null) {
-			btnIzvrsiZamenu = new JButton("Izvrsi izmenu");
+			btnIzvrsiZamenu = new JButton("Izvrsi zamenu");
 			btnIzvrsiZamenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					GUIKontroler.prikaziIzvrsiIzmenu();
-					editorPane.setText(GUIKontroler.getZaEditor());
 				}
 			});
 
@@ -249,14 +251,7 @@ public class MenjacnicaGUI extends JFrame {
 	private JPopupMenu getPopupMenu() {
 		if (popupMenu == null) {
 			popupMenu = new JPopupMenu();
-			popupMenu.addMouseListener(new MouseAdapter() {
 
-				@Override
-				public void mousePressed(MouseEvent e) {
-					popupMenu.setVisible(true);
-				}
-
-			});
 			popupMenu.add(getMntmDodajKurs());
 			popupMenu.add(getMntmIzbrisiKurs());
 			popupMenu.add(getMntmIzvrsiIzmenu());
@@ -287,7 +282,58 @@ public class MenjacnicaGUI extends JFrame {
 	private JButton getBtnIzbrisiKurs() {
 		if (btnIzbrisiKurs == null) {
 			btnIzbrisiKurs = new JButton("Izbrisi kurs");
+			btnIzbrisiKurs.setPreferredSize(new Dimension(120, 25));
 			btnIzbrisiKurs.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					if (getTable().getSelectedRow() != -1) {
+
+						int opcija = JOptionPane.showConfirmDialog(getContentPane(),
+								"Da li ste sigurni da zelite da obrisete kurs?", "Brisanje kursa",
+								JOptionPane.YES_NO_OPTION);
+
+						if (opcija == JOptionPane.YES_OPTION) {
+							int red = getTable().getSelectedRow();
+							Valute v = new Valute();
+							v.setSifra((Integer) getTable().getValueAt(red, 0));
+							v.setSkraceniNaziv((String) getTable().getValueAt(red, 1));
+							v.setKupovni((Double) getTable().getValueAt(red, 2));
+							v.setProdajni((Double) getTable().getValueAt(red, 3));
+							v.setSrednji((Double) getTable().getValueAt(red, 4));
+							v.setNaziv((String) getTable().getValueAt(red, 5));
+							GUIKontroler.izbrisiValutu(v);
+							osveziTabelu();
+							dodajTekst(
+									"Izbrisan je red sa indeksom: " + (red + 1) + " i kurs sa sifrom: " + v.getSifra());
+						}
+
+					} else {
+						JOptionPane.showMessageDialog(getContentPane(),
+								"Niste odabrali red u tabeli koji zelite da obrisete!");
+					}
+				}
+			});
+		}
+		return btnIzbrisiKurs;
+	}
+
+	private JMenuItem getMntmDodajKurs() {
+		if (mntmDodajKurs == null) {
+			mntmDodajKurs = new JMenuItem("Dodaj kurs");
+			mntmDodajKurs.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					GUIKontroler.prikaziDodajKurs();
+					osveziTabelu();
+				}
+			});
+		}
+		return mntmDodajKurs;
+	}
+
+	private JMenuItem getMntmIzbrisiKurs() {
+		if (mntmIzbrisiKurs == null) {
+			mntmIzbrisiKurs = new JMenuItem("Izbrisi kurs");
+			mntmIzbrisiKurs.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (getTable().getSelectedRow() != -1) {
 						int red = getTable().getSelectedRow();
@@ -310,37 +356,30 @@ public class MenjacnicaGUI extends JFrame {
 				}
 			});
 		}
-		return btnIzbrisiKurs;
-	}
-
-	private JEditorPane getEditorPane() {
-		if (editorPane == null) {
-			editorPane = new JEditorPane();
-			editorPane.setPreferredSize(new Dimension(130, 50));
-			editorPane.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		}
-		return editorPane;
-	}
-
-	private JMenuItem getMntmDodajKurs() {
-		if (mntmDodajKurs == null) {
-			mntmDodajKurs = new JMenuItem("Dodaj kurs");
-		}
-		return mntmDodajKurs;
-	}
-
-	private JMenuItem getMntmIzbrisiKurs() {
-		if (mntmIzbrisiKurs == null) {
-			mntmIzbrisiKurs = new JMenuItem("Izbrisi kurs");
-		}
 		return mntmIzbrisiKurs;
 	}
 
 	private JMenuItem getMntmIzvrsiIzmenu() {
 		if (mntmIzvrsiIzmenu == null) {
 			mntmIzvrsiIzmenu = new JMenuItem("Izvrsi izmenu");
+			mntmIzvrsiIzmenu.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					GUIKontroler.prikaziIzvrsiIzmenu();
+					
+				}
+			});
 		}
 		return mntmIzvrsiIzmenu;
+	}
+
+	private JEditorPane getEditorPane() {
+		if (editorPane == null) {
+			editorPane = new JEditorPane();
+			editorPane.setEditable(false);
+			editorPane.setEnabled(false);
+			editorPane.setBorder(new TitledBorder(null, "Status", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		}
+		return editorPane;
 	}
 
 	public static void dodajTekst(String tekst) {

@@ -41,7 +41,7 @@ public class GUIKontroler {
 
 	public static void ugasiAplikaciju() {
 		int opcija = JOptionPane.showConfirmDialog(menjacnica.getContentPane(), "Da li zelite da zatvorite program?",
-				"Zatvaranje aplikacije", JOptionPane.YES_NO_OPTION);
+				"Zatvaranje aplikacije", JOptionPane.YES_NO_CANCEL_OPTION);
 
 		if (opcija == JOptionPane.YES_OPTION) {
 			System.exit(0);
@@ -56,8 +56,11 @@ public class GUIKontroler {
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
-				putanja = (String) (file.getAbsolutePath());
+				putanja = "Sacuvan fajl: " + (String) (file.getAbsolutePath()) + "\n";
 				kurs.sacuvajUFajl(file.getAbsolutePath());
+			}
+			if (returnVal == JFileChooser.CANCEL_OPTION) {
+				putanja = "";
 			}
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(menjacnica.getContentPane(), e1.getMessage(), "Greska",
@@ -76,8 +79,12 @@ public class GUIKontroler {
 				File file = fc.getSelectedFile();
 				kurs.ucitajIzFajla(file.getAbsolutePath());
 				menjacnica.osveziTabelu();
-				putanja = (String) (file.getAbsolutePath());
+				putanja = "Ucitan fajl: " + (String) (file.getAbsolutePath()) + "\n";
 
+			}
+
+			if (returnVal == JFileChooser.CANCEL_OPTION) {
+				putanja = "";
 			}
 		} catch (Exception e1) {
 			JOptionPane.showMessageDialog(menjacnica.getContentPane(), e1.getMessage(), "Greska",
@@ -113,7 +120,7 @@ public class GUIKontroler {
 	}
 
 	public static void prikaziIzvrsiIzmenu() {
-		IzvrsiIzmenuGUI prozor = new IzvrsiIzmenuGUI();
+		IzvrsiZamenuGUI prozor = new IzvrsiZamenuGUI();
 		prozor.setVisible(true);
 		prozor.setLocationRelativeTo(null);
 	}

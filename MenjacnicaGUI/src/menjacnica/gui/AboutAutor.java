@@ -20,7 +20,6 @@ public class AboutAutor extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	
 
 	/**
 	 * Create the dialog.
@@ -37,7 +36,7 @@ public class AboutAutor extends JDialog {
 			textArea.setPreferredSize(new Dimension(400, 180));
 			textArea.setEnabled(false);
 			textArea.setEditable(false);
-			textArea.setText("Autor aplikacije je Luka Baljak.");
+			textArea.setText("Autor aplikacije je Luka Baljak, student Fakulteta Organizacionih Nauka u Beogradu. ");
 			contentPanel.add(textArea);
 		}
 		{
